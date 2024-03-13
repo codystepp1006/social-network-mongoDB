@@ -8,7 +8,7 @@ const userSchema = new Schema(
             unique: true,
             validate: {
                 validator: function(username) {
-                    return /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(email)
+                    return /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(username)
                   },
                   message: username => `${username.value} is not a valid email`
                 }
@@ -23,3 +23,12 @@ const userSchema = new Schema(
         }
 
 )
+userSchema
+  .virtual('friendCount')
+  .get(function() {
+    return this.friends.length
+  })
+
+const User = model('user', userSchema);
+
+module.exports = User;
